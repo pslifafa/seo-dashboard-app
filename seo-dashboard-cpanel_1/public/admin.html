@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RankPilot — SEO Dashboard</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="mark" id="loginLogoMark">R</div>
+      <div class="name" id="loginLogoName">RankPilot</div>
+    </div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">Welcome back</h2>
+    <p style="color:var(--text-dim);font-size:13.5px;margin-bottom:24px">Sign in to your SEO dashboard</p>
+    <div id="loginErr" class="login-err"></div>
+    <div class="form-field"><label class="form-label">Email address</label><input class="form-input" id="loginEmail" type="email" value="admin@example.com"></div>
+    <div class="form-field"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" value="admin123"></div>
+    <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;padding:11px;margin-top:4px;border-radius:10px">Sign in →</button>
+    <p class="login-hint">Default: admin@example.com / admin123</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="app" id="dashboard" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo" id="sbBrandLogo">R</div>
+      <div class="brand-name" id="sbBrandName">RankPilot</div>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">Main</div>
+      <a class="nav-item active" data-page="overview" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Overview
+      </a>
+      <a class="nav-item" data-page="projects" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Projects
+      </a>
+      <div class="nav-section">SEO</div>
+      <a class="nav-item" data-page="keywords" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+        Keywords
+      </a>
+      <a class="nav-item" data-page="backlinks" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Backlinks
+      </a>
+      <a class="nav-item" data-page="audit" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        Site Audit
+      </a>
+      <div class="nav-folder">
+        <a class="nav-item" id="insightsToggle" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
+          Insights &amp; Reports
+          <svg class="nav-chevron" id="insightsChevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:auto;width:13px;height:13px"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+        <div class="nav-submenu" id="insightsSubmenu">
+          <a class="nav-item nav-subitem" data-page="insights-impressions" href="#">Impression Insights</a>
+          <a class="nav-item nav-subitem" data-page="insights-clicks" href="#">Clicks Insights</a>
+          <a class="nav-item nav-subitem" data-page="insights-conversions" href="#">Conversion Insights</a>
+        </div>
+      </div>
+      <div class="nav-section">Paid</div>
+      <a class="nav-item" data-page="ads" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+        Ads &amp; Campaigns
+      </a>
+      <a class="nav-item" data-page="billing" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+      <div class="nav-section">Work</div>
+      <a class="nav-item" data-page="tasks" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Tasks
+      </a>
+      <a class="nav-item" data-page="notifications" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Notifications
+        <span class="nav-badge" id="navBadge" style="display:none">0</span>
+      </a>
+      <div class="nav-section" data-owner-only="1">Admin</div>
+      <a class="nav-item" data-page="users" data-owner-only="1" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Users
+      </a>
+      <a class="nav-item" data-page="settings" data-owner-only="1" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+      <a class="nav-item" href="/" target="_blank">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Public site
+      </a>
+    </nav>
+  </aside>
+
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Overview</div>
+      <div class="topbar-search">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input placeholder="Search campaigns, ads…" id="globalSearch">
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-bell" id="bellBtn">🔔<span class="dot" id="bellDot" style="display:none">0</span></div>
+        <div class="kebab-wrap">
+          <div class="topbar-avatar" id="topbarAvatar" data-kebab="topbar" style="cursor:pointer">A</div>
+          <div class="kebab-menu" data-kebab-menu="topbar" id="topbarMenu" style="right:0;min-width:200px">
+            <div style="padding:8px 10px 10px;border-bottom:1px solid var(--border);margin-bottom:4px">
+              <div style="font-size:13px;font-weight:700" id="topbarMenuEmail">—</div>
+              <div style="font-size:11.5px;color:var(--text-muted)" id="topbarMenuRole">—</div>
+            </div>
+            <button class="kebab-item danger" id="topbarLogoutBtn">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== OVERVIEW ===== -->
+      <section class="page active" id="page-overview">
+        <!-- Filter row like screenshot -->
+        <div class="filter-row">
+          <div class="filter-pill">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <select id="rangeFilter">
+              <option>Last 30 days</option>
+              <option>Last 7 days</option>
+              <option>Last 90 days</option>
+              <option>This year</option>
+            </select>
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="filter-pill">
+            <select id="campaignFilter">
+              <option>All Campaigns</option>
+            </select>
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="filter-pill">
+            <select id="accountFilter">
+              <option>All Accounts</option>
+            </select>
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <button class="btn btn-sm btn-pill" style="margin-left:auto">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+        </div>
+
+        <!-- 4 stat cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Impressions</div>
+            <div class="stat-value" id="ov-impr">—</div>
+            <div><span class="stat-delta up" id="ov-impr-d">↑ 18.3%</span> <span class="stat-period">vs last period</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Clicks</div>
+            <div class="stat-value" id="ov-clicks">—</div>
+            <div><span class="stat-delta up" id="ov-clicks-d">↑ 12.7%</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Spend</div>
+            <div class="stat-value" id="ov-spend">—</div>
+            <div><span class="stat-delta down" id="ov-spend-d">↓ 2.1%</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Conversions</div>
+            <div class="stat-value" id="ov-conv">—</div>
+            <div><span class="stat-delta up" id="ov-conv-d">↑ 24.5%</span></div>
+          </div>
+        </div>
+
+        <!-- Mini stats row -->
+        <div class="mini-row">
+          <div class="mini-card"><div class="lbl">Keywords</div><div class="val" id="ov-kw">—</div></div>
+          <div class="mini-card"><div class="lbl">Backlinks</div><div class="val" id="ov-bl">—</div></div>
+          <div class="mini-card"><div class="lbl">Projects</div><div class="val" id="ov-proj">—</div></div>
+          <div class="mini-card"><div class="lbl">Open Tasks</div><div class="val" id="ov-tasks">—</div></div>
+          <div class="mini-card"><div class="lbl">Notifications</div><div class="val" id="ov-notifs">—</div></div>
+        </div>
+
+        <!-- Performance Over Time chart -->
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Performance Over Time</h3>
+            <div class="panel-head-right">
+              <div class="chart-range" id="chartRange">
+                <div class="chart-range-opt" data-days="28">28d</div>
+                <div class="chart-range-opt active" data-days="90">3m</div>
+                <div class="chart-range-opt" data-days="180">6m</div>
+              </div>
+            </div>
+          </div>
+          <div class="perf-chart-area">
+            <div id="perfChart"></div>
+          </div>
+        </div>
+
+        <!-- Bottom: Top Campaigns + Budget Utilization -->
+        <div class="bottom-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Top Campaigns</h3>
+              <button class="btn btn-sm btn-pill" data-goto="ads">View all</button>
+            </div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>ROAS</th></tr></thead>
+              <tbody id="ov-campaigns"></tbody>
+            </table></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Budget Utilization</h3></div>
+            <div class="budget-list" id="ov-budget"></div>
+          </div>
+        </div>
+
+        <div class="bottom-grid" style="margin-top:20px">
+          <div class="panel">
+            <div class="panel-head"><h3>Traffic Sources</h3></div>
+            <div id="ov-traffic-sources"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Keyword Position Distribution</h3></div>
+            <div id="ov-keyword-dist"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section class="page" id="page-projects">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Projects</h2><p>Websites and domains you're tracking</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary" data-write-only="1" data-modal="project">+ New Project</button></div>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input wide" placeholder="Search projects…" id="f-projects-q">
+          <select class="form-select" id="f-projects-st"><option value="">All statuses</option><option value="active">Active</option><option value="paused">Paused</option><option value="ended">Ended</option></select>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th>Project</th><th>Domain</th><th>Status</th><th>Published</th><th>Created</th><th></th></tr></thead>
+          <tbody id="projects-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== KEYWORDS ===== -->
+      <section class="page" id="page-keywords">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Keywords</h2><p>Track rankings, search volume and difficulty</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary" data-write-only="1" data-modal="keyword">+ Add Keyword</button></div>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input wide" placeholder="Search keywords…" id="f-kw-q">
+          <select class="form-select" id="f-kw-proj"><option value="">All projects</option></select>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th>Keyword</th><th>Project</th><th>Volume/mo</th><th>Difficulty</th><th>Position</th><th>Change</th><th>URL</th><th>Pub</th><th></th></tr></thead>
+          <tbody id="keywords-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== BACKLINKS ===== -->
+      <section class="page" id="page-backlinks">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Backlinks</h2><p>Monitor inbound links and domain ratings</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary" data-write-only="1" data-modal="backlink">+ Add Backlink</button></div>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input wide" placeholder="Search backlinks…" id="f-bl-q">
+          <select class="form-select" id="f-bl-type"><option value="">All types</option><option value="dofollow">Dofollow</option><option value="nofollow">Nofollow</option></select>
+          <select class="form-select" id="f-bl-st"><option value="">All statuses</option><option value="live">Live</option><option value="broken">Broken</option><option value="removed">Removed</option></select>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th>Source URL</th><th>Anchor Text</th><th>DR</th><th>Type</th><th>Status</th><th>Project</th><th>Pub</th><th></th></tr></thead>
+          <tbody id="backlinks-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== SITE AUDIT ===== -->
+      <section class="page" id="page-audit">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Site Audit</h2><p>SEO health score per project, built from your real keyword rankings, backlinks, and open tasks</p></div>
+        </div>
+        <div id="audit-body"></div>
+      </section>
+
+      <!-- ===== INSIGHTS & REPORTS ===== -->
+      <section class="page" id="page-insights-impressions">
+        <div class="page-header"><div class="page-header-left"><h2>Impression Insights</h2><p>How your impressions are trending across every campaign</p></div></div>
+        <div id="insights-impressions-body"></div>
+      </section>
+      <section class="page" id="page-insights-clicks">
+        <div class="page-header"><div class="page-header-left"><h2>Clicks Insights</h2><p>Click volume and trend across every campaign</p></div></div>
+        <div id="insights-clicks-body"></div>
+      </section>
+      <section class="page" id="page-insights-conversions">
+        <div class="page-header"><div class="page-header-left"><h2>Conversion Insights</h2><p>Which campaigns are actually converting</p></div></div>
+        <div id="insights-conversions-body"></div>
+      </section>
+
+      <!-- ===== ADS ===== -->
+      <section class="page" id="page-ads">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Ads &amp; Campaigns</h2><p>Track all paid campaigns and performance metrics</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary" data-write-only="1" data-modal="ad">+ New Campaign</button></div>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input wide" placeholder="Search campaigns…" id="f-ads-q">
+          <select class="form-select" id="f-ads-plat"><option value="">All platforms</option><option value="google">Google</option><option value="meta">Meta</option><option value="bing">Bing</option><option value="linkedin">LinkedIn</option><option value="tiktok">TikTok</option></select>
+          <select class="form-select" id="f-ads-st"><option value="">All statuses</option><option value="active">Active</option><option value="paused">Paused</option><option value="ended">Ended</option></select>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th>Campaign</th><th>Platform</th><th>Status</th><th>Spend</th><th>Clicks</th><th>Impressions</th><th>Conversions</th><th>CPC</th><th>CVR</th><th>ROAS</th><th>Pub</th><th></th></tr></thead>
+          <tbody id="ads-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== BILLING ===== -->
+      <section class="page" id="page-billing">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Billing</h2><p>Your billing activity and saved payment methods</p></div>
+        </div>
+        <div class="chart-range" id="billingTabs" style="width:fit-content;margin-bottom:18px">
+          <div class="chart-range-opt active" data-btab="activity">Billing Activity</div>
+          <div class="chart-range-opt" data-btab="methods">Payment Methods</div>
+        </div>
+        <div id="billing-activity" class="billing-tab active"></div>
+        <div id="billing-methods" class="billing-tab"></div>
+      </section>
+
+      <!-- ===== TASKS ===== -->
+      <section class="page" id="page-tasks">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Tasks</h2><p>SEO action items and to-dos across projects</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary" data-write-only="1" data-modal="task">+ New Task</button></div>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input wide" placeholder="Search tasks…" id="f-tasks-q">
+          <select class="form-select" id="f-tasks-st"><option value="">All statuses</option><option value="todo">To-do</option><option value="in_progress">In progress</option><option value="done">Done</option></select>
+          <select class="form-select" id="f-tasks-pri"><option value="">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th>Task</th><th>Project</th><th>Priority</th><th>Status</th><th>Due date</th><th></th></tr></thead>
+          <tbody id="tasks-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== NOTIFICATIONS ===== -->
+      <section class="page" id="page-notifications">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Notifications</h2><p>Alerts for rankings, links and budget changes</p></div>
+          <div class="page-header-actions">
+            <button class="btn" id="markAllReadBtn" data-write-only="1">✓ Mark all read</button>
+            <button class="btn btn-primary" data-write-only="1" data-modal="notification">+ New Alert</button>
+          </div>
+        </div>
+        <div class="panel"><div class="table-wrap"><table>
+          <thead><tr><th></th><th>Title</th><th>Message</th><th>Type</th><th>Date</th><th></th></tr></thead>
+          <tbody id="notifications-table"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== USERS (client/gmail whitelist) ===== -->
+      <section class="page" id="page-users">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Users</h2><p>Whitelist the Gmail/email addresses allowed into the dashboard, assign their permission level, and ban access at any time</p></div>
+        </div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="modal-body" style="border:none;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-field" style="flex:1;min-width:220px;margin-bottom:0">
+              <label class="form-label">Add a user by email</label>
+              <input class="form-input" id="newUserEmail" placeholder="client@gmail.com">
+            </div>
+            <div class="form-field" style="min-width:150px;margin-bottom:0">
+              <label class="form-label">Permission</label>
+              <select class="form-select" id="newUserRole">
+                <option value="client" selected>Client — view only</option>
+                <option value="admin">Admin — manage SEO data</option>
+                <option value="owner">Owner — full access</option>
+              </select>
+            </div>
+            <div class="form-field" style="min-width:150px;margin-bottom:0">
+              <label class="form-label">Access length</label>
+              <select class="form-select" id="newUserDuration">
+                <option value="">No expiry</option>
+                <option value="7d">7 days</option>
+                <option value="28d">28 days</option>
+                <option value="90d">3 months</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="addUserBtn">➕ Add user</button>
+          </div>
+        </div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Email</th><th>Status</th><th>Permission</th><th>Sign-in method</th><th>Account</th><th>Expires</th><th>Last login</th><th></th></tr></thead>
+            <tbody id="users-table"></tbody>
+          </table></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>New Sign-up Requests</h3></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Reference ID</th><th>Name</th><th>Email</th><th>Country</th><th>Status</th><th>Requested</th><th></th></tr></thead>
+            <tbody id="signup-requests-table"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="page" id="page-settings">
+        <div class="page-header">
+          <div class="page-header-left"><h2>Settings</h2><p>Manage site content and account security</p></div>
+        </div>
+        <div class="grid-2">
+          <div class="panel" data-owner-only="1">
+            <div class="panel-head"><h3>Dashboard &amp; Site Branding</h3></div>
+            <div class="modal-body" style="border:none">
+              <div class="form-field">
+                <label class="form-label">Logo</label>
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div id="logoPreviewWrap" style="width:56px;height:56px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">
+                    <img id="logoPreviewImg" style="width:100%;height:100%;object-fit:cover;display:none">
+                    <span id="logoPreviewFallback" style="font-weight:800;font-size:20px;color:var(--accent)">R</span>
+                  </div>
+                  <div>
+                    <input type="file" id="set-logo-file" accept="image/*" style="display:none">
+                    <button class="btn btn-sm" id="logoUploadBtn" type="button">Upload image</button>
+                    <button class="btn btn-sm" id="logoRemoveBtn" type="button" style="color:var(--red)">Remove</button>
+                    <p style="font-size:11.5px;color:var(--text-muted);margin-top:6px">PNG or SVG, square, at least 128×128px recommended.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field"><label class="form-label">Site title</label><input class="form-input" id="set-title"></div>
+              <div class="form-field"><label class="form-label">Tagline</label><input class="form-input" id="set-tagline"></div>
+              <div class="form-field"><label class="form-label">Description</label><textarea class="form-textarea" id="set-desc"></textarea></div>
+              <button class="btn btn-primary" id="saveSettingsBtn">Save changes</button>
+            </div>
+          </div>
+          <div>
+          <div class="panel" data-owner-only="1" style="margin-bottom:16px">
+            <div class="panel-head"><h3>Billing Settings</h3></div>
+            <div class="modal-body" style="border:none">
+              <div class="form-row">
+                <div class="form-field"><label class="form-label">Currency symbol</label><input class="form-input" id="set-currency" placeholder="$"></div>
+                <div class="form-field"><label class="form-label">Tax rate (%)</label><input class="form-input" type="number" step="0.1" id="set-taxrate" placeholder="5"></div>
+              </div>
+              <div class="form-field"><label class="form-label">Company name (shown on bills)</label><input class="form-input" id="set-company"></div>
+              <div class="form-field"><label class="form-label">Billing address</label><textarea class="form-textarea" id="set-address"></textarea></div>
+              <div class="form-field"><label class="form-label">Invoice note</label><input class="form-input" id="set-invoicenote"></div>
+              <button class="btn btn-primary" id="saveBillingSettingsBtn">Save billing settings</button>
+            </div>
+          </div>
+            <div class="panel" style="margin-bottom:16px">
+              <div class="panel-head"><h3>Account</h3></div>
+              <div class="modal-body" style="border:none">
+                <div class="user-card" style="margin-bottom:14px">
+                  <div class="user-avatar" id="sidebarAvatar">A</div>
+                  <div class="user-info">
+                    <div class="user-name" id="sidebarEmail">admin</div>
+                    <div class="user-role" id="sidebarRole">Admin</div>
+                  </div>
+                </div>
+                <button class="btn" id="logoutBtn" style="width:100%;justify-content:center;color:var(--red);border-color:rgba(239,68,68,.25)">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-right:6px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  Sign out
+                </button>
+              </div>
+            </div>
+            <div class="panel" style="margin-bottom:16px" data-admin-source-only="1">
+              <div class="panel-head"><h3>Change Password</h3></div>
+              <div class="modal-body" style="border:none">
+                <div class="form-field"><label class="form-label">Current password</label><input class="form-input" id="pw-current" type="password"></div>
+                <div class="form-field"><label class="form-label">New password</label><input class="form-input" id="pw-new" type="password"></div>
+                <p id="pwMsg" style="font-size:12.5px;min-height:14px;margin-bottom:10px"></p>
+                <button class="btn btn-primary" id="changePwBtn">Update password</button>
+              </div>
+            </div>
+            <div class="panel" data-owner-only="1">
+              <div class="panel-head"><h3>Database Stats</h3></div>
+              <div style="padding:16px 20px" id="dbStats"><p style="color:var(--text-muted);font-size:13px">Loading…</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">New item</h3>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn" id="modalCancel">Cancel</button>
+      <button class="btn btn-primary" id="modalSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg">Saved</span></div>
+<script src="/admin.js"></script>
+</body>
+</html>

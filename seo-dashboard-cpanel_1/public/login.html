@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in — RankPilot</title>
+<link rel="stylesheet" href="/styles.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  .portal-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:24px;padding:3px;margin-bottom:20px}
+  .portal-tab{flex:1;text-align:center;padding:8px 10px;border-radius:20px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all .12s}
+  .portal-tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
+  .portal-google-btn{width:100%;justify-content:center;gap:10px;padding:10px;border-radius:10px;font-weight:600;font-size:13.5px}
+  .portal-divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--text-muted);font-size:11.5px}
+  .portal-divider::before,.portal-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+  .back-link{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:22px}
+  .back-link:hover{color:var(--text)}
+  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .terms-row{display:flex;align-items:flex-start;gap:8px;margin:4px 0 16px}
+  .terms-row input{margin-top:3px}
+  .terms-row label{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .terms-row a{color:var(--blue);font-weight:600}
+  #googleBtnContainer{display:flex;justify-content:center;margin-bottom:4px}
+  .ref-box{background:var(--bg);border:1px dashed var(--border-2);border-radius:12px;padding:16px;text-align:center;margin:18px 0}
+  .ref-box .ref-lbl{font-size:11.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .ref-box .ref-id{font-size:20px;font-weight:800;letter-spacing:.03em;font-family:monospace}
+  .success-icon{width:52px;height:52px;border-radius:50%;background:#ecfdf5;color:#059669;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+</style>
+</head>
+<body class="login-page">
+  <div class="login-card" style="max-width:440px">
+    <a href="/" class="back-link">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to site
+    </a>
+    <div class="login-logo">
+      <div class="mark" id="loginMark">R</div>
+      <div class="name" id="loginName">RankPilot</div>
+    </div>
+
+    <!-- ===== MODE TABS ===== -->
+    <div id="tabsWrap">
+      <div class="portal-tabs">
+        <div class="portal-tab active" data-tab="signup">Create account</div>
+        <div class="portal-tab" data-tab="login">Log in</div>
+      </div>
+    </div>
+
+    <div id="portalErr" class="login-err"></div>
+
+    <!-- ===== LOG IN VIEW ===== -->
+    <div id="loginView">
+      <h2 style="font-size:19px;font-weight:700;margin-bottom:4px">Client login</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Sign in with the account your agency contact approved.</p>
+
+      <div id="googleBtnContainer"></div>
+      <button class="btn portal-google-btn" id="portalGoogleBtnFallback" type="button" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.4 29.4 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.8l6-6C33.6 6.5 29.1 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c2.8 0 5.3 1 7.3 2.8l6-6C33.6 6.5 29.1 4.5 24 4.5c-7.7 0-14.4 4.4-17.7 10.2z"/><path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.2-7.2 2.2-5.3 0-9.9-3.6-11.5-8.4l-6.5 5C9.4 39 16.1 43.5 24 43.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.7 2-2 3.7-3.7 5l6.2 5.2C40.8 35.6 43.5 30.2 43.5 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+        Continue with Google (demo)
+      </button>
+      <div class="portal-divider"><span>or</span></div>
+
+      <div class="form-field"><label class="form-label">Email address</label><input class="form-input" id="loginEmail" type="email" placeholder="you@company.com"></div>
+      <div class="form-field"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" placeholder="Your password"></div>
+      <button class="btn btn-primary" id="loginSubmitBtn" style="width:100%;justify-content:center;padding:11px;border-radius:10px">Log in →</button>
+      <p class="login-hint">Not approved yet? Use "Create account" to request access.</p>
+    </div>
+
+    <!-- ===== CREATE ACCOUNT (REQUEST) VIEW ===== -->
+    <div id="signupView">
+      <h2 style="font-size:19px;font-weight:700;margin-bottom:4px">Request dashboard access</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Fill this out to request access. Submitting does not grant access — our team reviews every request.</p>
+
+      <div class="form-row-2">
+        <div class="form-field"><label class="form-label">First name</label><input class="form-input" id="su-first" placeholder="Jordan"></div>
+        <div class="form-field"><label class="form-label">Last name</label><input class="form-input" id="su-last" placeholder="Lee"></div>
+      </div>
+      <div class="form-field"><label class="form-label">Gmail / email address</label><input class="form-input" id="su-email" type="email" placeholder="you@gmail.com"></div>
+      <div class="form-field"><label class="form-label">Country</label>
+        <select class="form-select" id="su-country" style="width:100%">
+          <option value="">Select your country</option>
+        </select>
+      </div>
+      <div class="form-row-2">
+        <div class="form-field"><label class="form-label">Password</label><input class="form-input" id="su-password" type="password" placeholder="At least 6 characters"></div>
+        <div class="form-field"><label class="form-label">Confirm password</label><input class="form-input" id="su-confirm" type="password" placeholder="Repeat password"></div>
+      </div>
+      <div class="terms-row">
+        <input type="checkbox" id="su-terms">
+        <label for="su-terms">I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</label>
+      </div>
+      <button class="btn btn-primary" id="signupSubmitBtn" style="width:100%;justify-content:center;padding:11px;border-radius:10px">Create account →</button>
+      <p class="login-hint">Already approved? Switch to "Log in" above.</p>
+    </div>
+
+    <!-- ===== SUCCESS / REFERENCE ID VIEW ===== -->
+    <div id="successView" style="display:none">
+      <div class="success-icon">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 style="font-size:19px;font-weight:700;text-align:center;margin-bottom:6px">Request received</h2>
+      <p style="font-size:13px;color:var(--text-muted);text-align:center">Your request has been submitted for review. This does <strong>not</strong> grant dashboard access yet — you'll be contacted once it's approved.</p>
+      <div class="ref-box">
+        <div class="ref-lbl">Your reference ID</div>
+        <div class="ref-id" id="refIdDisplay">—</div>
+      </div>
+      <a class="btn btn-primary" id="contactAdminBtn" style="width:100%;justify-content:center;padding:11px;border-radius:10px" href="#">✉️ Contact admin about this request</a>
+      <p class="login-hint">Keep your reference ID handy — mention it when you reach out.</p>
+    </div>
+  </div>
+
+<script>
+const ADMIN_EMAIL='yourdave301@gmail.com';
+function e(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const api2={
+  async post(u,b){const r=await fetch(u,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const d=await r.json().catch(()=>({}));if(!r.ok)throw d;return d;}
+};
+
+const COUNTRIES=['United States','United Kingdom','Canada','Australia','India','Germany','France','Spain','Italy','Netherlands','Ireland','Singapore','United Arab Emirates','Japan','South Korea','Brazil','Mexico','South Africa','New Zealand','Sweden','Switzerland','Other'];
+const countrySel=document.getElementById('su-country');
+COUNTRIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;countrySel.appendChild(o);});
+
+let googleClientId='';
+async function loadBranding(){
+  let data={};
+  try{ data=await fetch('/api/public/site').then(r=>r.json()); }catch(err){}
+  const settings=data.settings||{};
+  googleClientId=data.googleClientId||'';
+  const title=settings.site_title||'RankPilot';
+  document.title='Sign in — '+title;
+  document.getElementById('loginName').textContent=title;
+  if(settings.site_logo){
+    document.getElementById('loginMark').innerHTML=`<img src="${e(settings.site_logo)}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`;
+  } else {
+    document.getElementById('loginMark').textContent=(title[0]||'R').toUpperCase();
+  }
+  initGoogle();
+}
+loadBranding();
+
+/* Basic deterrence only — client-side JS/HTML is always inspectable over the network,
+   so this discourages casual copying but cannot stop a determined developer. */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if (k === 'f12') { e.preventDefault(); return; }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].includes(k)) { e.preventDefault(); return; }
+  if ((e.ctrlKey || e.metaKey) && k === 'u') { e.preventDefault(); return; }
+});
+
+
+/* ---- View / tab switching ---- */
+let mode=new URLSearchParams(location.search).get('mode')==='login'?'login':'signup';
+function applyMode(){
+  document.querySelectorAll('.portal-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===mode));
+  document.getElementById('loginView').style.display=mode==='login'?'block':'none';
+  document.getElementById('signupView').style.display=mode==='signup'?'block':'none';
+  document.getElementById('successView').style.display='none';
+  document.getElementById('tabsWrap').style.display='block';
+  clearErr();
+}
+applyMode();
+document.querySelectorAll('.portal-tab').forEach(t=>t.addEventListener('click',()=>{mode=t.dataset.tab;applyMode();}));
+
+function showErr(msg){ const el=document.getElementById('portalErr'); el.textContent=msg; el.classList.add('show'); }
+function clearErr(){ document.getElementById('portalErr').classList.remove('show'); }
+
+/* ---- Real Google Sign-In (falls back to a labeled demo button with no Client ID) ---- */
+function initGoogle(){
+  if(googleClientId && window.google && google.accounts && google.accounts.id){
+    google.accounts.id.initialize({ client_id: googleClientId, callback: handleGoogleCredential });
+    google.accounts.id.renderButton(document.getElementById('googleBtnContainer'), { theme:'outline', size:'large', width:360, text:'signin_with' });
+    document.getElementById('portalGoogleBtnFallback').style.display='none';
+  } else if (!googleClientId) {
+    document.getElementById('googleBtnContainer').style.display='none';
+    document.getElementById('portalGoogleBtnFallback').style.display='flex';
+  } else {
+    // script hasn't finished loading yet — retry briefly
+    setTimeout(initGoogle, 300);
+  }
+}
+async function handleGoogleCredential(response){
+  clearErr();
+  try{
+    await api2.post('/api/portal/google-verify',{credential:response.credential});
+    window.location.href='/admin';
+  }catch(err){ showErr(err.error||'Something went wrong. Please try again.'); }
+}
+document.getElementById('portalGoogleBtnFallback').addEventListener('click',async()=>{
+  const email=prompt('Demo Google sign-in (no Client ID configured) — enter the Gmail address to continue with:');
+  if(!email)return;
+  try{
+    await api2.post('/api/portal/google-demo',{email:email.trim()});
+    window.location.href='/admin';
+  }catch(err){ showErr(err.error||'Something went wrong. Please try again.'); }
+});
+
+/* ---- Log in (existing whitelisted users) ---- */
+document.getElementById('loginSubmitBtn').addEventListener('click',async()=>{
+  clearErr();
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  if(!email){showErr('Enter your email address.');return;}
+  if(!password){showErr('Enter your password.');return;}
+  try{
+    await api2.post('/api/portal/login',{email,password});
+    window.location.href='/admin';
+  }catch(err){ showErr(err.error||'Something went wrong. Please try again.'); }
+});
+
+/* ---- Create account = request access (no dashboard access granted) ---- */
+document.getElementById('signupSubmitBtn').addEventListener('click',async()=>{
+  clearErr();
+  const firstName=document.getElementById('su-first').value.trim();
+  const lastName=document.getElementById('su-last').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const country=document.getElementById('su-country').value;
+  const password=document.getElementById('su-password').value;
+  const confirm=document.getElementById('su-confirm').value;
+  const acceptedTerms=document.getElementById('su-terms').checked;
+
+  if(!firstName||!lastName){showErr('Enter your first and last name.');return;}
+  if(!email){showErr('Enter your email address.');return;}
+  if(!country){showErr('Select your country.');return;}
+  if(!password||password.length<6){showErr('Password must be at least 6 characters.');return;}
+  if(password!==confirm){showErr('Passwords do not match.');return;}
+  if(!acceptedTerms){showErr('You must accept the Terms & Conditions to continue.');return;}
+
+  try{
+    const result=await api2.post('/api/signup-requests',{firstName,lastName,email,country,password,acceptedTerms});
+    document.getElementById('refIdDisplay').textContent=result.referenceId;
+    const subject=encodeURIComponent('Dashboard access request — '+result.referenceId);
+    const body=encodeURIComponent(`Hi,\n\nI'd like to follow up on my dashboard access request.\n\nReference ID: ${result.referenceId}\nName: ${firstName} ${lastName}\nEmail: ${email}\n\nThanks!`);
+    document.getElementById('contactAdminBtn').href=`mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
+    document.getElementById('tabsWrap').style.display='none';
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('signupView').style.display='none';
+    document.getElementById('successView').style.display='block';
+  }catch(err){ showErr(err.error||'Something went wrong. Please try again.'); }
+});
+</script>
+</body>
+</html>
